@@ -1,0 +1,72 @@
+# ===========================================================================
+# .gitignore：现代前端项目标准忽略规则
+# 适用于 Vue / React / Vite / TS / Nuxt / Svelte / Astro / Next.js 等
+# ===========================================================================
+
+# -----------------------------
+# 依赖与包管理
+# -----------------------------
+node_modules/
+.npm/
+.yarn/
+!/.yarn/patches/
+!/.yarn/plugins/
+!/.yarn/releases/
+!/.yarn/sdks/
+!/.yarn/versions/
+
+# -----------------------------
+# 构建产物与部署输出
+# -----------------------------
+/dist
+/build
+/out
+/.output
+/.vite
+/.nuxt
+/.svelte-kit
+/.astro
+/.next
+/public/build
+/.vercel
+/.netlify
+
+# -----------------------------
+# IDE 与编辑器
+# -----------------------------
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.sw[po]
+*.sublime-project
+*.sublime-workspace
+
+# -----------------------------
+# 环境变量（严禁提交敏感配置）
+# -----------------------------
+.env
+.env.local
+.env.*.local
+# !.env.example   # 如需共享模板，请取消注释
+
+# -----------------------------
+# 缓存、测试与临时文件
+# -----------------------------
+.cache/
+.temp/
+.tmp/
+coverage/
+.nyc_output/
+.reports/
+
+# -----------------------------
+# 操作系统与工具生成文件
+# -----------------------------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.{orig,bak,tmp}
