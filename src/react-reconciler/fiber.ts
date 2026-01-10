@@ -1,26 +1,20 @@
-// 导入共享类型定义
+// 导入共享的 React 类型定义
 import { Props, Key, Ref, ReactElementType } from "@/shared/ReactTypes";
-
-// 导入 Fiber 节点的工作类型常量
+// 导入 Fiber 节点的工作标签（WorkTag）常量
 import {
   Fragment,
   FunctionComponent,
   HostComponent,
   WorkTag,
 } from "./workTags";
-
-// 导入副作用标志（用于标记节点需要执行的操作）
+// 导入副作用标志（用于标记节点在 commit 阶段需要执行的操作）
 import { Flags, NoFlags } from "./fiberFlags";
-
-// 宿主环境容器类型（如 HTMLElement）
+// 宿主环境容器类型（如 DOM 中的 HTMLElement）
 import { Container } from "@/react-dom/hostConfig";
-
-// 优先级模型：Lane（单个优先级通道）、Lanes（多个通道的位掩码）
+// 优先级模型：Lane（单个通道）、Lanes（多个通道的位掩码）
 import { Lane, Lanes, NoLane, NoLanes } from "./fiberLanes";
-
-// Effect 类型，用于存储 useEffect/useLayoutEffect 的副作用
+// Effect 类型，用于存储 useEffect/useLayoutEffect 的副作用函数
 import { Effect } from "./fiberHooks";
-
 // Scheduler 提供的回调节点类型，用于可中断任务调度
 import { CallbackNode } from "scheduler";
 
@@ -29,7 +23,7 @@ import { CallbackNode } from "scheduler";
  * 每个 React 元素（组件、DOM 节点、Fragment 等）都会对应一个 FiberNode。
  */
 export class FiberNode {
-  // --- 基础信息 ---
+  // --- 基础属性 ---
   type: any; // 组件类型：函数组件为函数，HostComponent 为字符串（如 'div'）
   tag: WorkTag; // 节点类型标签（FunctionComponent / HostComponent / Fragment 等）
   pendingProps: Props; // 本次更新传入的新 props
@@ -63,25 +57,18 @@ export class FiberNode {
   constructor(tag: WorkTag, pendingProps: Props, key: Key) {
     this.tag = tag;
     this.key = key || null;
-
     this.stateNode = null;
-
     this.type = null;
-
     this.return = null;
     this.sibling = null;
     this.child = null;
     this.index = 0;
-
     this.ref = null;
-
     this.pendingProps = pendingProps;
     this.memoizedProps = null;
     this.memoizedState = null;
     this.updateQueue = null;
-
     this.alternate = null;
-
     this.flags = NoFlags;
     this.subtreeFlags = NoFlags;
     this.deletions = null;
@@ -111,7 +98,6 @@ export class FiberRootNode {
   pendingPassiveEffects: PendingPassiveEffects; // 待执行的 useEffect 副作用
   callbackNode: CallbackNode | null; // 当前正在运行的调度回调（用于中断）
   callbackPriority: Lane; // 当前回调的优先级
-
   /**
    * 构造函数：初始化 Fiber 根对象
    * @param container - 宿主容器（如 HTMLElement）
@@ -127,7 +113,6 @@ export class FiberRootNode {
     this.finishedLane = NoLane;
     this.callbackNode = null;
     this.callbackPriority = NoLane;
-
     this.pendingPassiveEffects = {
       unmount: [],
       update: [],
@@ -149,12 +134,10 @@ export const createWorkInProgress = (
   pendingProps: Props
 ): FiberNode => {
   let wip = current.alternate;
-
   if (wip === null) {
     // 首次渲染：创建新的 workInProgress 节点
     wip = new FiberNode(current.tag, pendingProps, current.key);
     wip.stateNode = current.stateNode;
-
     // 建立双缓冲双向链接
     wip.alternate = current;
     current.alternate = wip;
@@ -166,14 +149,12 @@ export const createWorkInProgress = (
     wip.subtreeFlags = NoFlags;
     wip.deletions = null;
   }
-
   // 从 current 节点继承不变的属性
   wip.type = current.type;
   wip.updateQueue = current.updateQueue;
   wip.child = current.child;
   wip.memoizedProps = current.memoizedProps;
   wip.memoizedState = current.memoizedState;
-
   return wip;
 };
 
@@ -185,7 +166,6 @@ export const createWorkInProgress = (
 export function createFiberFromElement(element: ReactElementType): FiberNode {
   const { type, key, props } = element;
   let fiberTag: WorkTag = FunctionComponent; // 默认视为函数组件
-
   if (typeof type === "string") {
     // 原生 DOM 元素，如 <div />
     fiberTag = HostComponent;
@@ -197,7 +177,6 @@ export function createFiberFromElement(element: ReactElementType): FiberNode {
       element
     );
   }
-
   const fiber = new FiberNode(fiberTag, props, key);
   fiber.type = type;
   return fiber;
