@@ -4,7 +4,9 @@
   "description": "......",
   "dependencies": {
     "@types/react": "^18.2.6",
-    "@types/scheduler": "^0.16.3"
+    "@types/scheduler": "^0.16.3",
+    "react": "^18.2.0",
+    "scheduler": "^0.23.0"
   },
   "devDependencies": {
     "html-webpack-plugin": "^5.5.1",
