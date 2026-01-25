@@ -232,7 +232,6 @@ function commitRoot(root: FiberRootNode) {
   if (finishedWork === null) {
     return;
   }
-  console.warn("[Commit] Commit phase started", finishedWork);
   const lane = root.finishedLane;
   if (lane === NoLane) {
     console.error("finishedLane should not be NoLane during commit phase.");
