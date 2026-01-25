@@ -41,7 +41,7 @@ function ChildReconciler(shouldTrackEffects: boolean) {
    */
   function deleteRemainingChildren(
     returnFiber: FiberNode,
-    currentFirstChild: FiberNode | null
+    currentFirstChild: FiberNode | null,
   ) {
     if (!shouldTrackEffects) {
       return;
@@ -61,7 +61,7 @@ function ChildReconciler(shouldTrackEffects: boolean) {
   function reconcileSingleElement(
     returnFiber: FiberNode,
     currentFiber: FiberNode | null,
-    element: ReactElementType
+    element: ReactElementType,
   ) {
     const key = element.key;
     // 遍历当前 Fiber 链，寻找 key 匹配的节点
@@ -111,7 +111,7 @@ function ChildReconciler(shouldTrackEffects: boolean) {
   function reconcileSingleTextNode(
     returnFiber: FiberNode,
     currentFiber: FiberNode | null,
-    content: string | number
+    content: string | number,
   ) {
     // 查找已存在的 HostText 节点
     while (currentFiber !== null) {
@@ -147,7 +147,7 @@ function ChildReconciler(shouldTrackEffects: boolean) {
   function reconcileChildrenArray(
     returnFiber: FiberNode,
     currentFirstChild: FiberNode | null,
-    newChild: any[]
+    newChild: any[],
   ) {
     let lastPlacedIndex = 0; // 记录已放置节点的最大原索引，用于判断是否需要移动
     let lastNewFiber: FiberNode | null = null;
@@ -211,7 +211,7 @@ function ChildReconciler(shouldTrackEffects: boolean) {
     returnFiber: FiberNode,
     existingChildren: ExistingChildren,
     index: number,
-    element: any
+    element: any,
   ): FiberNode | null {
     const keyToUse = element.key !== null ? element.key : index;
     const before = existingChildren.get(keyToUse);
@@ -235,7 +235,7 @@ function ChildReconciler(shouldTrackEffects: boolean) {
               before,
               element,
               keyToUse,
-              existingChildren
+              existingChildren,
             );
           }
           if (before) {
@@ -258,7 +258,7 @@ function ChildReconciler(shouldTrackEffects: boolean) {
         before,
         element,
         keyToUse,
-        existingChildren
+        existingChildren,
       );
     }
     return null;
@@ -270,7 +270,7 @@ function ChildReconciler(shouldTrackEffects: boolean) {
   return function reconcileChildFibers(
     returnFiber: FiberNode,
     currentFiber: FiberNode | null,
-    newChild?: any
+    newChild?: any,
   ) {
     // 处理无 key 的顶层 Fragment：<>{children}</> → 提取 children
     const isUnkeyedTopLevelFragment =
@@ -283,13 +283,12 @@ function ChildReconciler(shouldTrackEffects: boolean) {
     }
     if (typeof newChild === "object" && newChild !== null) {
       if (Array.isArray(newChild)) {
-        debugger;
         return reconcileChildrenArray(returnFiber, currentFiber, newChild);
       }
       switch (newChild.$$typeof) {
         case REACT_ELEMENT_TYPE:
           return placeSingleChild(
-            reconcileSingleElement(returnFiber, currentFiber, newChild)
+            reconcileSingleElement(returnFiber, currentFiber, newChild),
           );
         default:
           console.warn("Unimplemented reconcile type", newChild);
@@ -299,7 +298,7 @@ function ChildReconciler(shouldTrackEffects: boolean) {
     // 处理文本子节点
     if (typeof newChild === "string" || typeof newChild === "number") {
       return placeSingleChild(
-        reconcileSingleTextNode(returnFiber, currentFiber, newChild)
+        reconcileSingleTextNode(returnFiber, currentFiber, newChild),
       );
     }
     // 新 children 为 null/undefined，但存在旧子树 → 全部删除
@@ -329,7 +328,7 @@ function updateFragment(
   current: FiberNode | undefined,
   elements: any[],
   key: Key,
-  existingChildren: ExistingChildren
+  existingChildren: ExistingChildren,
 ) {
   let fiber;
   // 若当前 Fiber 不是 Fragment 或不存在，则新建
