@@ -49,7 +49,7 @@ export const commitMutationEffects = (
     } else {
       // 否则回溯并处理当前节点及其兄弟节点
       up: while (nextEffect !== null) {
-        commitMutaitonEffectsOnFiber(nextEffect, root);
+        commitMutationEffectsOnFiber(nextEffect, root);
         const sibling: FiberNode | null = nextEffect.sibling;
         if (sibling !== null) {
           nextEffect = sibling;
@@ -64,7 +64,7 @@ export const commitMutationEffects = (
 /**
  * 在单个 Fiber 节点上执行所有已标记的 mutation 副作用，并清除对应 flags。
  */
-const commitMutaitonEffectsOnFiber = (
+const commitMutationEffectsOnFiber = (
   finishedWork: FiberNode,
   root: FiberRootNode
 ) => {
