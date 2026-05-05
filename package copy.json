@@ -1,0 +1,24 @@
+{
+  "name": "react-source-code",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "webpack serve --config webpack.dev.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.1",
+    "ts-loader": "^9.4.2",
+    "webpack": "^5.83.1",
+    "webpack-cli": "^5.1.1",
+    "webpack-dev-server": "^4.15.0"
+  },
+  "dependencies": {
+    "@types/react": "^18.2.6",
+    "@types/scheduler": "^0.16.3",
+    "react": "^18.2.0",
+    "react-source-code": "file:",
+    "scheduler": "^0.23.0"
+  }
+}

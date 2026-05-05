@@ -1,0 +1,24 @@
+span {
+  word-break: break-all;
+  font-size: 30px;
+}
+
+.pri-1 {
+  color: #43d343;
+}
+.pri-2 {
+  color: #e67ee6;
+}
+.pri-3 {
+  color: #eb9f68;
+}
+.pri-4 {
+  color: black;
+}
+
+button {
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+}
