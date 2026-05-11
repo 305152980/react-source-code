@@ -90,7 +90,13 @@ function ensureRootIsScheduled(root: FiberRootNode) {
   let newCallbackNode = null;
   if (updateLane === SyncLane) {
     console.log(`[Scheduler] Enqueue sync render (lane: ${updateLane})`);
+    // 1. 将“同步渲染任务”放入内部的同步队列（syncQueue）中
+    // 注意：这里只是把任务存起来，并没有立即执行。
+    // performSyncWorkOnRoot 是真正干活的人，负责执行同步渲染和提交。
     scheduleSyncCallback(performSyncWorkOnRoot.bind(null, root));
+    // 2. 利用微任务（MicroTask，类似 Promise.then）机制，预约在“当前宏任务结束后、页面重绘前”执行冲刷操作
+    // flushSyncCallbacks 的作用是去遍历并执行刚才放入 syncQueue 中的所有任务。
+    // 这样做的好处是：即使你连续调用多次 setState，微任务只会触发一次冲刷，从而实现批量更新。
     scheduleMicroTask(flushSyncCallbacks);
   } else {
     const schedulerPriority = lanesToSchedulerPriority(curPriority);
@@ -262,6 +268,11 @@ function commitRoot(root: FiberRootNode) {
   } else {
     root.current = finishedWork;
   }
+  // React 采用的是“所有节点处理完 DOM 操作后，再统一同步处理所有 useLayoutEffect”的策略。
+  // ---------------------------------------------------------
+  // 在 React 源码中，这里会调用 commitLayoutEffects(finishedWork, root)
+  // 这个函数会遍历 Fiber 树，执行所有 useLayoutEffect 的回调
+  // ---------------------------------------------------------
   rootDoesHasPassiveEffects = false;
   ensureRootIsScheduled(root);
 }
